@@ -1,0 +1,36 @@
+extends layout
+
+block content
+	h1 #{post.title}
+	p.meta Posted in 
+		a(href='/categories/show/#{post.category}') #{post.category} by #{post.author} on #{moment(post.date).format("MM-DD-YYYY")}
+	p #{post.body}
+	br
+	hr 
+	if comments
+		h3 Comments
+		each comment, i in comments
+			.comment
+				p.comment-name-date #{comment.name} submitted on #{comment.date}
+				p.comment-body #{comment.body}
+				br
+				hr
+	br
+	h3 Add Comments
+	ul.errors
+		if errors
+			each error, i in errors
+				li.alert.alert-danger #{error.msg}
+	form.comment-form(method='post')
+		input(name='linkedto',type='hidden',value='#{post.title}')
+		.form-group
+			label Name
+			input.form-control(type='text',name='name')
+		.form-group
+			label Email
+			input.form-control(type='email',name='email')
+		.form-group
+			label Body
+			textarea.form-control(id='body',name='body')
+		br
+		input.btn.btn-default(name='submit',type='submit',value='Add Comment')                                
